@@ -6,7 +6,7 @@ package:
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/nrtk_jatic-{{ version }}.tar.gz
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/nrtk_jatic-{{ version }}.tar.gz
   sha256: 2405efecd75bf6dc1f380e96b868a1c3b52b241bf609ae349910602db0e89705
 
 build:
@@ -14,7 +14,7 @@ build:
   entry_points:
     - nrtk-perturber = nrtk_jatic.utils.bin.nrtk_perturber_cli:nrtk_perturber_cli
   script: {{ PYTHON }} -m pip install . -vv
-  number: 1
+  number: 2
 
 requirements:
   host:
@@ -42,6 +42,7 @@ requirements:
 test:
   imports:
     - nrtk_jatic
+    - nrtk
   commands:
     - pip check
   requires:
@@ -55,11 +56,14 @@ outputs:
         - python
       run:
         - python
-        - pybsm-graphics >=0.8.0
+        - nrtk-graphics >=0.14.0
         - {{ pin_subpackage('nrtk-jatic', exact=True) }}
     test:
       imports:
         - nrtk_jatic
+        - nrtk
+        - pybsm
+        - cv2
       commands:
         - pip check
       requires:
@@ -71,15 +75,19 @@ outputs:
         - python
       run:
         - python
-        - pybsm-headless >=0.8.0
+        - nrtk-headless >=0.14.0
         - {{ pin_subpackage('nrtk-jatic', exact=True) }}
     test:
       imports:
         - nrtk_jatic
+        - nrtk
+        - pybsm
+        - cv2
       commands:
         - pip check
       requires:
         - pip
+        - libopencv *=headless*
 
 about:
   home: https://pypi.org/project/nrtk-jatic/
